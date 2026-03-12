@@ -1,0 +1,76 @@
+<% layout("layouts/boilerplate") %>
+<%- include("../includes/flash.ejs") %>
+<div class="row">
+  <div class="col-9 offset-1">
+    <hr />
+      <div class="card col-6 offset-1">
+        <h2><%= allList.title %></h2>
+        <div>
+          <img
+            src="<%=allList.image.url%>"
+            class="card-img-top"
+            alt="img"
+            style="width : 800px !important; height: 250px !important"
+          />
+        </div>
+      
+        <div class="card-body mt-3"  style="width:800px !important;">
+            
+            <p class="mt-2"><%=allList.description%></p>
+            <p>Price: &#8377;<%=allList.price.toLocaleString("en-IN")%></p>
+            <p>Location: <%=allList.location%></p>
+            <p>Country: <%=allList.country%></p>
+            <br />
+            
+            <span style="display: inline-block"
+              ><form method="GET" action="/listings/<%=allList._id%>/edit">
+                <button class="btn btn-dark edit">Edit</button>
+              </form></span
+            >
+            <span style="display: inline-block"
+              ><form
+                method="post"
+                action="/listings/<%=allList._id%>?_method=DELETE"
+              >
+                <button class="btn btn-danger delete">Delete</button>
+              </form></span
+            >
+
+            <hr />
+          
+        </div>
+      </div>
+    
+    <div class="mb-4 mt-4  col-6 offset-1">
+      <form action="/listings/<%=allList._id%>/reviews" method="post" novalidate class="needs-validation">
+        <h4>Leave a Review</h4>
+        <div>
+          <label for="review", class="form-label">Rate: </label>
+          <input name="review[rating]" class="form-range" type="range" min="1" max="5">
+        </div>
+        <textarea name="review[comment]" id="review[comment]" cols="50" rows="5" required></textarea
+        >
+        <div class="invalid-feedback">
+          Please provide a comment.
+
+        </div>
+        <div>
+        <button class="btn btn-danger" type="submit">Submit</button></div>
+      </form>
+    </div>
+    <div class="row offset-1">
+    
+      <h4>Reviews</h4>
+      <% for(let rev of allList.reviews){ %>
+        <div class="card col-5 mb-3" style="border-left:5px !important;">
+          <div class="card-body">
+            <p class="card-text"><%=rev.comment%></p>
+            <p class="card-text"><%=rev.rating%> star</p>
+            
+          </div>
+          <form method="POST" action="/listings/<%= allList._id %>/reviews/<%= rev._id %>?_method=DELETE"><button class="btn btn-sm btn-dark mt-1">Delete</button></form>
+        </div>
+      <% } %>
+  </div>
+  </div>
+</div>

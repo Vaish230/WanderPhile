@@ -1,0 +1,70 @@
+body {
+  overflow-x: hidden;
+  font-family: "Montserrat", sans-serif;
+}
+.home,
+.container {
+  padding-left: 60px;
+  padding-right: 60px;
+}
+.navbar {
+  height: 4.7rem;
+  background-color: #ededed;
+}
+.fa-compass {
+  color: red;
+  font-size: 2rem;
+}
+.nav-link {
+  color: #222222 !important;
+}
+nav-link {
+  background-color: blue;
+}
+.f-info-socials,
+.f-info-links,
+.f-info-br {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.f-info-links a {
+  text-decoration: none;
+  color: #222222;
+  margin-right: 1rem;
+}
+.f-info-links a:hover {
+  text-decoration: underline;
+  color: #222222;
+}
+.f-info {
+  text-align: center;
+  height: 8rem;
+  background-color: #ededed;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.f-info-socials i {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+.card {
+  border: none !important;
+  margin-bottom: 1rem;
+}
+.card-img-top {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+.card-body {
+  padding: 0 !important;
+}
+.card:hover {
+  opacity: 0.88;
+}
+.anch {
+  text-decoration: none;
+}

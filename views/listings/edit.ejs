@@ -1,0 +1,30 @@
+<%layout("/layouts/boilerplate")%>
+
+<body>
+  <h1>Edit the Post</h1>
+  <hr />
+  <form method="post" action="/listings/<%=allList._id%>?_method=PATCH">
+    <label>Title: </label>
+    <input name="title" type="text" value="<%=allList.title%>" /><br /><br />
+    <label>Description: </label>
+    <textarea name="description" type="text"><%=allList.description%></textarea
+    ><br /><br />
+    <label>Price: </label>
+    <input name="price" type="text" value="<%=allList.price%>" /><br /><br />
+    <label>Location: </label>
+    <input
+      name="location"
+      type="text"
+      value="<%=allList.location%>"
+    /><br /><br />
+    <label>Country: </label>
+    <input
+      name="country"
+      type="text"
+      value="<%=allList.country%>"
+    /><br /><br />
+    <button type="submit">Update</button>
+  </form>
+  <hr />
+  <script src="" async defer></script>
+</body>

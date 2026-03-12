@@ -1,0 +1,36 @@
+<%layout("/layouts/boilerplate")%>
+  <body>
+    <h1>Add Post</h1>
+    <hr /><div class="col-8 offset-2">
+    <form method="post" action="/listings/add" novalidate class="needs-validation">
+      <div ><label class="form-label" for="title">Title: </label>
+      <input name="listing[title]" type="text"  class="form-control" required/></div><br />
+      
+      <div >
+      <label class="form-label" for="description" >Description: </label>
+      <textarea name="listing[description]" type="text" class="form-control" required>
+</textarea
+      ></div><br />
+      <div><label class="form-label" for="location">Location</label>
+      <input name="listing[location]" type="text" class="form-control" required></div><br />
+      <div class="row">
+      <div class="col-6"><label class="form-label" for="price">Price: </label>
+      <input
+        name="listing[price]"
+        type="text"
+        class="form-control" required
+      /></div><br />
+      <div class="col-6"><label class="form-label" for="country">Country: </label>
+      <input
+        name="listing[country]"
+        type="text"
+        class="form-control"
+
+        type="number"; required
+        
+      /></div></div></div><br />
+      <button style=" margin-left:13rem;" class="btn btn-dark" type="submit">Add</button>
+    </form></div><hr>
+    <script src="" async defer></script>
+  </body>
+  
