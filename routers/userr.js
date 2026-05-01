@@ -5,29 +5,13 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const controllingu = require("../controllers/user.js");
 
-router.get("/register", (req, res) => {
-  res.render("listings/register.ejs");
-});
-router.post(
-  "/register",
-  wrapAsync(async (req, res) => {
-    try {
-      let { email, username, password } = req.body;
-      const user = new User({ email, username });
-      const regUser = await User.register(user, password);
-      req.flash("success", "Successfully registered!");
-      res.redirect("/listings");
-    } catch (e) {
-      req.flash("error", e.message);
-      res.redirect("/register");
-    }
-  }),
-);
+router.get("/register", controllingu.registerPage);
 
-router.get("/login", async (req, res) => {
-  res.render("listings/login.ejs");
-});
+router.post("/register", wrapAsync(controllingu.registerUser));
+
+router.get("/login", controllingu.loginPage);
 
 router.post(
   "/login",
@@ -35,10 +19,9 @@ router.post(
     failureFlash: true,
     failureRedirect: "/login",
   }),
-  wrapAsync(async (req, res) => {
-    req.flash("success", "Welcome back!");
-    res.redirect("/listings");
-  }),
+  wrapAsync(controllingu.loginUser),
 );
+
+router.get("/logout", controllingu.logoutUser);
 
 module.exports = router;

@@ -1,76 +1,161 @@
 <% layout("layouts/boilerplate") %>
 <%- include("../includes/flash.ejs") %>
+
 <div class="row">
   <div class="col-9 offset-1">
-    <hr />
-      <div class="card col-6 offset-1">
-        <h2><%= allList.title %></h2>
-        <div>
-          <img
-            src="<%=allList.image.url%>"
-            class="card-img-top"
-            alt="img"
-            style="width : 800px !important; height: 250px !important"
-          />
-        </div>
-      
-        <div class="card-body mt-3"  style="width:800px !important;">
-            
-            <p class="mt-2"><%=allList.description%></p>
-            <p>Price: &#8377;<%=allList.price.toLocaleString("en-IN")%></p>
-            <p>Location: <%=allList.location%></p>
-            <p>Country: <%=allList.country%></p>
-            <br />
-            
-            <span style="display: inline-block"
-              ><form method="GET" action="/listings/<%=allList._id%>/edit">
-                <button class="btn btn-dark edit">Edit</button>
-              </form></span
-            >
-            <span style="display: inline-block"
-              ><form
-                method="post"
-                action="/listings/<%=allList._id%>?_method=DELETE"
-              >
-                <button class="btn btn-danger delete">Delete</button>
-              </form></span
-            >
 
-            <hr />
-          
-        </div>
+
+    <!-- LISTING CARD -->
+    <div class="card col-10 offset-1">
+      <h2><%= allList.title %></h2>
+
+      <img
+        src="<%= allList.image.url %>"
+        class="card-img"
+        alt="img"
+        style=" height: 250px;"
+      />
+
+      <div class="card-body mt-3" style="width:800px;">
+        <p>Owned by - <i><%= allList.owner.username %></i></p>
+        <p><%= allList.description %></p>
+        <p>Price: ₹<%= allList.price.toLocaleString("en-IN") %></p>
+        <p>Location: <%= allList.location %></p>
+        <p>Country: <%= allList.country %></p>
+        <% if (
+  userCheck?._id &&
+  allList.owner?._id &&
+  allList.owner._id.toString() === userCheck._id.toString()
+) { %>
+          <form method="GET" action="/listings/<%= allList._id %>/edit" style="display:inline;">
+            <button class="btn btn-dark">Edit</button>
+          </form>
+
+          <form method="POST" action="/listings/<%= allList._id %>?_method=DELETE" style="display:inline;">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        <% } %>
+
+        <hr />
       </div>
-    
-    <div class="mb-4 mt-4  col-6 offset-1">
-      <form action="/listings/<%=allList._id%>/reviews" method="post" novalidate class="needs-validation">
-        <h4>Leave a Review</h4>
-        <div>
-          <label for="review", class="form-label">Rate: </label>
-          <input name="review[rating]" class="form-range" type="range" min="1" max="5">
-        </div>
-        <textarea name="review[comment]" id="review[comment]" cols="50" rows="5" required></textarea
-        >
-        <div class="invalid-feedback">
-          Please provide a comment.
-
-        </div>
-        <div>
-        <button class="btn btn-danger" type="submit">Submit</button></div>
-      </form>
     </div>
-    <div class="row offset-1">
-    
-      <h4>Reviews</h4>
-      <% for(let rev of allList.reviews){ %>
-        <div class="card col-5 mb-3" style="border-left:5px !important;">
-          <div class="card-body">
-            <p class="card-text"><%=rev.comment%></p>
-            <p class="card-text"><%=rev.rating%> star</p>
-            
+   <div class="col-10 offset-1">
+    <h4>You Are Here</h4>
+    <div id="map" style="height: 300px; width: 100%; margin-top: 20px; margin-bottom:20px;"></div>
+</div>
+    <!-- REVIEW FORM -->
+    <% if(userCheck){ %>
+      <div class="mb-4 mt-4 col-6 offset-1">
+
+        <form action="/listings/<%= allList._id %>/reviews" method="POST">
+
+          <h4>Leave a Review</h4>
+
+          <fieldset class="starability-basic">
+  <legend>First rating:</legend>
+  <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+  <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+  <label for="first-rate1" title="Terrible">1 star</label>
+  <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+  <label for="first-rate2" title="Not good">2 stars</label>
+  <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+  <label for="first-rate3" title="Average">3 stars</label>
+  <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+  <label for="first-rate4" title="Very good">4 stars</label>
+  <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+  <label for="first-rate5" title="Amazing">5 stars</label>
+</fieldset>
+
+          <textarea 
+            name="review[comment]" 
+            cols="50" 
+            rows="5" 
+            required
+            class="form-control mt-2"
+          ></textarea>
+
+          <button class="btn btn-danger mt-2" type="submit">Submit</button>
+
+        </form>
+
+      </div>
+    <% } %>
+
+    <!-- REVIEWS SECTION -->
+    <% if(allList.reviews.length > 0){ %>
+      <div class="row offset-1 mt-4">
+        <h4>Reviews</h4>
+
+        <% for(let rev of allList.reviews){ %>
+          <div class="card col-5 mb-3 me-2">
+
+            <!-- AUTHOR SAFE -->
+            <% if(rev.author){ %>
+              <p class="mt-2">Owned by - <b><i><%= rev.author.username %></i></b></p>
+            <% } else { %>
+              <p class="mt-2">Owned by - <b><i>Anonymous</i></b></p>
+            <% } %>
+
+            <div class="card-body">
+              <p><%= rev.comment %></p>
+              <p>Rated: <%= rev.rating %> stars</p>
+              <p class="starability-result" data-rating="<%= rev.rating %>">
+    Rated: <%= rev.rating %> stars
+  </p>
+
+              <!-- DELETE ONLY IF OWNER -->
+              <% if (
+  userCheck?._id &&
+  rev.author?._id &&
+  rev.author._id.toString() === userCheck._id.toString()
+) { %>
+                <form method="POST" action="/listings/<%= allList._id %>/reviews/<%= rev._id %>?_method=DELETE">
+                  <button class="btn btn-sm btn-dark mt-1">Delete</button>
+                </form>
+              <% } %>
+            </div>
           </div>
-          <form method="POST" action="/listings/<%= allList._id %>/reviews/<%= rev._id %>?_method=DELETE"><button class="btn btn-sm btn-dark mt-1">Delete</button></form>
-        </div>
-      <% } %>
-  </div>
+        <% } %>
+
+      </div>
+    <% } %>
+
   </div>
 </div>
+
+<script>
+  const locationName = "<%= allList.location %>";
+
+  async function loadMap() {
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationName)}`
+      );
+      const data = await res.json();
+
+      if (data.length === 0) {
+        document.getElementById("map").innerHTML = "Location not found";
+        return;
+      }
+
+      const lat = data[0].lat;
+      const lon = data[0].lon;
+
+      const map = L.map("map").setView([lat, lon], 13);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap",
+      }).addTo(map);
+
+      L.marker([lat, lon])
+        .addTo(map)
+        .bindPopup("<%= allList.title %>")
+        .openPopup();
+    } catch (err) {
+      document.getElementById("map").innerHTML = "Error loading map";
+      console.error(err);
+    }
+  }
+
+  loadMap();
+</script>

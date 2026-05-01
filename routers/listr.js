@@ -1,11 +1,16 @@
 const express = require("express");
-const router = express.Router((mergeParams = true));
+const router = express.Router({ mergeParams: true });
 const listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("../schema.js");
 const sessions = require("express-session");
 const flash = require("connect-flash");
+const { isOwner } = require("../middlewares.js");
+const controlling = require("../controllers/listing.js");
+const multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
 
 const sessionOption = {
   secret: "mysupersecretcode",
@@ -27,79 +32,33 @@ const validateListing = (req, res, next) => {
   }
 };
 
-router.get(
-  "/",
-  wrapAsync(async (req, res) => {
-    const allList = await listing.find({});
-    res.render("listings/home.ejs", { allList });
-  }),
-);
+router.get("/", wrapAsync(controlling.mainPage));
 
-router.get(
-  "/add",
-  wrapAsync(async (req, res) => {
-    res.render("listings/add.ejs");
-  }),
-);
+router.get("/add", wrapAsync(controlling.addListingPage));
+
+router.get("/search", wrapAsync(controlling.searchListings));
+
+router.get("/category/:category", wrapAsync(controlling.getCategory));
+
+router.get("/:id/edit", wrapAsync(controlling.getIDtoEdit));
+
+router.get("/:id", wrapAsync(controlling.getID));
 
 router.post(
   "/add",
+  upload.single("listing[image]"),
   validateListing,
-  wrapAsync(async (req, res, next) => {
-    const { title, description, price, location, country } = req.body.listing;
-    let newList = new listing({
-      title,
-      description,
-      price,
-      location,
-      country,
-    });
-    await newList.save();
-    req.flash("success", "Successfully added a new listing!");
-    res.redirect("/listings");
-  }),
-);
-
-router.get(
-  "/:id",
-  wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const allList = await listing.findById(id).populate("reviews");
-    res.render("listings/show.ejs", { allList });
-  }),
-);
-
-router.get(
-  "/:id/edit",
-  wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const allList = await listing.findById(id);
-    res.render("listings/edit.ejs", { allList });
-  }),
+  wrapAsync(controlling.postListing),
 );
 
 router.patch(
   "/:id",
-  wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const { title, description, price, location, country } = req.body;
-
-    await listing.findByIdAndUpdate(
-      id,
-      { title, description, price, location, country },
-      { runValidators: true },
-    );
-    res.redirect(`/listings/${id}`);
-  }),
+  upload.single("listing[image]"),
+  isOwner,
+  validateListing,
+  wrapAsync(controlling.editListing),
 );
 
-router.delete(
-  "/:id",
-  wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    await listing.findByIdAndDelete(id);
-    res.redirect("/listings");
-  }),
-);
+router.delete("/:id", wrapAsync(controlling.deleteListing));
 
 module.exports = router;

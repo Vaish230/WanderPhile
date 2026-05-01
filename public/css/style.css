@@ -54,7 +54,7 @@ nav-link {
   border: none !important;
   margin-bottom: 1rem;
 }
-.card-img-top {
+.card-img {
   border-radius: 1rem !important;
   width: 100% !important;
   object-fit: cover !important;
@@ -62,9 +62,24 @@ nav-link {
 .card-body {
   padding: 0 !important;
 }
-.card:hover {
+.homecard:hover {
   opacity: 0.88;
 }
 .anch {
   text-decoration: none;
+}
+@media (max-width: 768px) {
+  .search {
+    margin-top: 1rem;
+  }
+
+  .brand {
+    display: none;
+  }
+
+  .filters {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
 }

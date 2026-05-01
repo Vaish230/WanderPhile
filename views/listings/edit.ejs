@@ -1,30 +1,128 @@
-<%layout("/layouts/boilerplate")%>
+<% layout("/layouts/boilerplate") %>
 
-<body>
+<div class="col-8 offset-2">
   <h1>Edit the Post</h1>
   <hr />
-  <form method="post" action="/listings/<%=allList._id%>?_method=PATCH">
-    <label>Title: </label>
-    <input name="title" type="text" value="<%=allList.title%>" /><br /><br />
-    <label>Description: </label>
-    <textarea name="description" type="text"><%=allList.description%></textarea
-    ><br /><br />
-    <label>Price: </label>
-    <input name="price" type="text" value="<%=allList.price%>" /><br /><br />
-    <label>Location: </label>
+
+  <form
+    method="post"
+    action="/listings/<%= allList._id %>?_method=PATCH"
+    novalidate
+    class="needs-validation"
+    enctype="multipart/form-data"
+  >
+    <label>Title:</label>
     <input
-      name="location"
+      name="listing[title]"
       type="text"
-      value="<%=allList.location%>"
-    /><br /><br />
-    <label>Country: </label>
+      value="<%= allList.title %>"
+      class="form-control"
+    /><br />
+
+    <label>Description:</label>
+    <textarea name="listing[description]" class="form-control">
+<%= allList.description %></textarea
+    ><br />
+
+    <div>
+      <label class="form-label">Upload Image:</label>
+      <input name="listing[image]" style="padding:0.65rem" type="file" class="form-control" />
+    </div>
+    <br />
+
+    <label>Location:</label>
     <input
-      name="country"
+      name="listing[location]"
       type="text"
-      value="<%=allList.country%>"
-    /><br /><br />
-    <button type="submit">Update</button>
+      value="<%= allList.location %>"
+      class="form-control"
+    /><br />
+
+    <div class="row">
+      <div class="col-6">
+        <label>Price:</label>
+        <input
+          name="listing[price]"
+          type="number"
+          value="<%= allList.price %>"
+          class="form-control"
+        /><br />
+      </div>
+
+      <div class="col-6">
+        <label>Country:</label>
+        <input
+          name="listing[country]"
+          type="text"
+          value="<%= allList.country %>"
+          class="form-control"
+        /><br />
+      </div>
+    </div>
+
+    <div>
+  <label >Category:</label>
+
+  <select
+    name="listing[category]"
+    class="form-control"
+    required
+  >
+    <option value="Trending"
+      <%= allList.category === "Trending" ? "selected" : "" %>>
+      Trending
+    </option>
+
+    <option value="Beach"
+      <%= allList.category === "Beach" ? "selected" : "" %>>
+      Beach
+    </option>
+
+    <option value="Mountains"
+      <%= allList.category === "Mountains" ? "selected" : "" %>>
+      Mountains
+    </option>
+
+    <option value="Farm"
+      <%= allList.category === "Farm" ? "selected" : "" %>>
+      Farm
+    </option>
+
+    <option value="Castle"
+      <%= allList.category === "Castle" ? "selected" : "" %>>
+      Castle
+    </option>
+
+    <option value="Space"
+      <%= allList.category === "Space" ? "selected" : "" %>>
+      Space
+    </option>
+
+    <option value="Snow"
+      <%= allList.category === "Snow" ? "selected" : "" %>>
+      Snow
+    </option>
+
+    <option value="Ferry"
+      <%= allList.category === "Ferry" ? "selected" : "" %>>
+      Ferry
+    </option>
+
+    <option value="City"
+      <%= allList.category === "City" ? "selected" : "" %>>
+      City
+    </option>
+
+    <option value="Dome"
+      <%= allList.category === "Dome" ? "selected" : "" %>>
+      Dome
+    </option>
+  </select>
+</div>
+
+<br />
+
+    <button  class="btn btn-dark" type="submit">Update</button>
   </form>
-  <hr />
-  <script src="" async defer></script>
-</body>
+</div>
+<hr />
