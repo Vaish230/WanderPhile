@@ -4,7 +4,7 @@ Wanderphile is a full‑stack web application where users can browse, create, ed
 
 ## 🚀 Live Demo
 
-**
+*https://wanderphile.onrender.com*
 
 ## ✨ Features
 
@@ -61,7 +61,7 @@ Wanderphile is a full‑stack web application where users can browse, create, ed
    ```
 5. **View on port**
    ```bash
-   [npm install](http://localhost:8080)
+   http://localhost:8080
    ```
 # 🗺️ API Routes
 
