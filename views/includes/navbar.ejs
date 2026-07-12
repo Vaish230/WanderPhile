@@ -1,32 +1,92 @@
 <style>
   .brand{
-    margin-right: 2rem;
-  white-space: nowrap;
-  font-size: 1.13rem;
+     white-space: nowrap;
+    margin: 0.5rem;
 
   }
+
+  @media (max-width: 1600px){
+    .brand{
+        display:none;
+    }
+}
+
   .navbar-nav {
     font-weight: 500;
   }
+
+
+
+@media (max-width: 767px) {
+    .navbar-collapse {
+        background-color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-top: 0.5rem;
+    }
+}
+
   .search{
-  position: absolute;
-  left: 46%;
-  transform: translateX(-50%);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  
   }
   .search input {
-  width: 500px;
-  margin-right: 1rem;
-}
+width: clamp(250px,30vw,550px);}
 .brand {
   margin-left: auto;
   margin-right: 1rem;
   white-space: nowrap;
 }
 
+@media (max-width: 768px) {
+    .search form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search input,
+    .search button {
+        width: 100% !important;
+    }
+}
+
 /* Align right-side items properly */
 .navbar-nav.ms-auto {
   display: flex;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav.ms-auto {
+        margin-left: 0 !important;
+        align-items: flex-start !important;
+    }
+
+    .navbar-nav.ms-auto .nav-link {
+        padding-left: 0;
+    }
+
+    .search {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 992px) {
+    .brand {
+        display: none;
+    }
+
+    .search {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .search input {
+        width: 100%;
+    }
 }
 
 .form-control {
@@ -54,25 +114,21 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+    <div class="collapse navbar-collapse align-items-center " id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" href="/listings">Home</a>
         <a class="nav-link" href="/listings/add">Add</a>
         <a class="nav-link" href="#">Pricing</a>
-        
-        
-    </div>
-    <div class="search mx-5">
+</div>  
+<div class="search mx-5">
     <form class="d-flex" role="search" action="/listings/search" method="GET">
         <input class="form-control me-700" type="search" name="q" placeholder="Search Destination" aria-label="Search"/>
         <button class="btn btn-danger" type="submit"><i class="fa-solid fa-magnifying-glass ml-2"></i>&nbsp; Search</button>
       </form>
     </div>
 
-    
-      </div>
-      <div class="brand mr-4" >
-      WanderPhile - Choose your Comfort
+        <div class="brand mr-4" >
+      WP - Choose your Comfort
     </div>
       
       <div class="navbar-nav ms-auto">
@@ -85,6 +141,10 @@
         <a class="nav-link" aria-disabled="true" href="/logout">Logout</a>
         <%}%>
       </div>
+        
+    </div>
+      </div>
+      
     </div>
   </div>
 </nav>

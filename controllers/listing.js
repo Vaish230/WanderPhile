@@ -37,7 +37,8 @@ module.exports.postListing = async (req, res, next) => {
   }
   const url = req.file.path;
   const filename = req.file.filename;
-  const { title, description, price, location, country } = req.body.listing;
+  const { title, description, price, location, country, category } =
+    req.body.listing;
   let newList = new listing({
     title,
     description,
